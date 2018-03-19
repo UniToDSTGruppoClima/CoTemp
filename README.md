@@ -18,39 +18,39 @@ When you start the program, (if interactive mode is available) you will be asked
 The text file has to be formatted in five TAB-separated columns. The first row of the file has to contain the headers (column names) while the first column has to contain the dates (in DD/MM/YYYY format). Column two is the Tx reference serie and column three is the Tn reference serie. Column four and five should contain Tx and Tn candidate series. Missing values must be marked as NA. It is very important to start the file from the first of January (of any year) and end it at the 31st of December (of any year). See the attached file called example_.txt (where _ is a number).
 
 ## OUTPUT
-01_TN_statistics_raw.csv - Main statistics on input Tn serie
-01_TN_summary_raw.csv - Summary of input Tn series and their difference
-01_TX_statistics_raw.csv - Main statistics on input Tx serie
-01_TX_summary_raw.csv - Summary of input Tx series and their difference
-01_TN_plot_raw.pdf - Plots of input Tn series
-01_TX_plot_raw.pdf - Plots of input Tx series
-02_TN_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tn
-02_TN_trend_relative error.csv - Informations on trend of Tn
-02_TN_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tn
-02_TN_plot_diff.pdf - Plot and distribution of difference in Tn series
-02_TN_relative_error.pdf - Plots of Tn PRE
-02_TX_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tx
-02_TX_trend_relative error.csv - Informations on trend of Tx
-02_TX_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tx
-02_TX_plot_diff.pdf - Plot and distribution of difference in Tx series
-02_TX_relative_error.pdf - Plots of Tx PRE
-03_TN_classes_candidate.csv - Statistics on the classes of candidate Tn
-03_TN_classes_reference.csv - Statistics on the classes of reference Tn
-03_TN_cold.csv - Statistics on Tn events classified as cold
-03_TN_extr_cold.csv - Statistics on Tn events classified as extremely cold
-03_TN_extr_warm.csv - Statistics on Tn events classified as extremely warm
-03_TN_frequencies_in_classes.csv - Frequencies of Tn events in every class
-03_TN_mean.csv - Statistics on Tn events classified as mean
-03_TN_warm.csv - Statistics on Tn events classified as warm
-03_TN_boxplot_diff.pdf - Boxplot of each class for Tn events
-03_TX_classes_candidate.csv - Statistics on the classes of candidate Tx
-03_TX_classes_reference.csv - Statistics on the classes of reference Tx
-03_TX_cold.csv - Statistics on Tx events classified as cold
-03_TX_extr_cold.csv - Statistics on Tx events classified as extremely cold
-03_TX_extr_warm.csv - Statistics on Tx events classified as extremely warm
-03_TX_frequencies_in_classes.csv - Frequencies of Tn events in every class
-03_TX_mean.csv - Statistics on Tx events classified as mean
-03_TX_warm.csv - Statistics on Tx events classified as warm
-03_TX_boxplot_diff.pdf - Boxplot of each class for Tx events
-TN_Results.xlsx - Collection of previous results for Tn in a single Excel file
-TX_Results.xlsx - Collection of previous results for Tx in a single Excel file
+- 01_TN_statistics_raw.csv - Main statistics on input Tn serie.
+- 01_TN_summary_raw.csv - Summary of input Tn series and their difference.
+- 01_TX_statistics_raw.csv - Main statistics on input Tx serie.
+- 01_TX_summary_raw.csv - Summary of input Tx series and their difference.
+- 01_TN_plot_raw.pdf - Plots of input Tn series.
+- 01_TX_plot_raw.pdf - Plots of input Tx series.
+- 02_TN_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tn.
+- 02_TN_trend_relative error.csv - Informations on trend of Tn.
+- 02_TN_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tn.
+- 02_TN_plot_diff.pdf - Plot and distribution of difference in Tn series.
+- 02_TN_relative_error.pdf - Plots of Tn PRE.
+- 02_TX_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tx.
+- 02_TX_trend_relative error.csv - Informations on trend of Tx.
+- 02_TX_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tx.
+- 02_TX_plot_diff.pdf - Plot and distribution of difference in Tx series.
+- 02_TX_relative_error.pdf - Plots of Tx PRE.
+- 03_TN_classes_candidate.csv - Statistics on the classes of candidate Tn.
+- 03_TN_classes_reference.csv - Statistics on the classes of reference Tn.
+- 03_TN_cold.csv - Statistics on Tn events classified as cold.
+- 03_TN_extr_cold.csv - Statistics on Tn events classified as extremely cold.
+- 03_TN_extr_warm.csv - Statistics on Tn events classified as extremely warm.
+- 03_TN_frequencies_in_classes.csv - Frequencies of Tn events in every class.
+- 03_TN_mean.csv - Statistics on Tn events classified as mean.
+- 03_TN_warm.csv - Statistics on Tn events classified as warm.
+- 03_TN_boxplot_diff.pdf - Boxplot of each class for Tn events.
+- 03_TX_classes_candidate.csv - Statistics on the classes of candidate Tx.
+- 03_TX_classes_reference.csv - Statistics on the classes of reference Tx.
+- 03_TX_cold.csv - Statistics on Tx events classified as cold.
+- 03_TX_extr_cold.csv - Statistics on Tx events classified as extremely cold.
+- 03_TX_extr_warm.csv - Statistics on Tx events classified as extremely warm.
+- 03_TX_frequencies_in_classes.csv - Frequencies of Tn events in every class.
+- 03_TX_mean.csv - Statistics on Tx events classified as mean.
+- 03_TX_warm.csv - Statistics on Tx events classified as warm.
+- 03_TX_boxplot_diff.pdf - Boxplot of each class for Tx events.
+- TN_Results.xlsx - Collection of previous results for Tn in a single Excel file.
+- TX_Results.xlsx - Collection of previous results for Tx in a single Excel file.
