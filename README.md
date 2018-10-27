@@ -1,5 +1,6 @@
 # Co.Temp
 ## Comparing series of Temperatures
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1472761.svg)](https://doi.org/10.5281/zenodo.1472761)
 
 This program aims to offer useful information on temperature series (i.e.: identify the biases in the daily maximum and minimum temperature, compare manual and automatic weather stations, etc.) and works in three steps: statistical analysis and characterization of the daily series of maximum (Tx) and minimum temperature (Tn), computation of monthly-aggregated data for both Tx and Tn and comparison between temperature classes of events (like heat wave, cold wave and normal events).
 
