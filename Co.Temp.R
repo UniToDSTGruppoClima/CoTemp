@@ -50,7 +50,7 @@
 # In the second step, any values that are missing in one series are also set to be
 # missing (as NA) in its counterpart. For each pair of series, the daily difference
 # is calculated in addition to the monthly difference series and the monthly
-# Relative Ratio (RR). A values of RR>0 shows an overestimation of the
+# Relative Ratio (RR). A values of RR>1 shows an overestimation of the
 # second monthly Tx|Tn series (called candidate) over the first one (reference),
 # while RR<1 highlights an underestimation of the candidate over the reference
 # series. On the monthly RR series is also computed the trend with its slope, to
@@ -416,7 +416,7 @@ analyze <- function(name, Tserie) {
   warm_common = Tserie_na[Tserie_na[,4]>q80 & Tserie_na[,4]<=q95 & Tserie_na[,5]>q80 & Tserie_na[,5]<=q95,]
   extr_warm_common = Tserie_na[Tserie_na[,4]>q95 & Tserie_na[,5]>q95,]
   
-  # Compute RMSE, ME, cor and summary on common class events
+  # Compute RMSE, cor and summary on common class events
   extr_cold_common_stat = as.data.frame(statistics(extr_cold_common[,4], extr_cold_common[,5]))
   cold_common_stat = as.data.frame(statistics(cold_common[,4],cold_common[,5]))
   mean_common_stat = as.data.frame(statistics(mean_common[,4],mean_common[,5]))
