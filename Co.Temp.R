@@ -5,7 +5,7 @@
 ###############################################################################
 ###############################################################################
 ###                                                                         ###
-### Copyright (C) 2018                                                      ###
+### Copyright (C) 2018-2019                                                 ###
 ### Fiorella Acquaotta, Diego Guenzi, Diego Garzena and Simona Fratianni    ###
 ###                                                                         ###
 ### This program is free software: you can redistribute it and/or modify    ###
@@ -43,17 +43,17 @@
 # maximum values are calculated and missing values are identified. A time series
 # plot and a density plot are created for each pair of series. Always for each pair
 # of series, the t test, the Kolmogorov-Smirnov test and the Wilcoxon's Rank Sum
-# test are carried out. Furthermore, the Root Mean Squared Error (RMSE), the Mean
-# Error (ME), and the correlation coefficient by Spearman's method are calculated
-# for every pair of series.
+# test are carried out. Furthermore, the Root Mean Squared Error (RMSE) and the
+# correlation coefficient by Spearman's method are calculated for every pair of
+# series.
 # 2] Computation of monthly data
 # In the second step, any values that are missing in one series are also set to be
 # missing (as NA) in its counterpart. For each pair of series, the daily difference
 # is calculated in addition to the monthly difference series and the monthly
-# Percentage Relative Error (PRE). A values of PRE>0 shows an overestimation of the
+# Relative Ratio (RR). A values of RR>0 shows an overestimation of the
 # second monthly Tx|Tn series (called candidate) over the first one (reference),
-# while PRE<0 highlights an underestimation of the candidate over the reference
-# series. On the monthly PRE series is also computed the trend whith its slope, to
+# while RR<1 highlights an underestimation of the candidate over the reference
+# series. On the monthly RR series is also computed the trend with its slope, to
 # identify if the shift between the pair of series increases, decreases or is
 # constant. 
 # 3] Classification of events
@@ -71,29 +71,29 @@
 # The text file has to be formatted in five TAB-separated columns. The first
 # row of the file has to contain the headers (column names) while the first
 # column has to contain the dates (in DD/MM/YYYY format). Column two is the
-# Tx reference serie and column three is the Tn reference serie. Column four
+# Tx reference series and column three is the Tn reference series. Column four
 # and five should contain Tx and Tn candidate series. Missing values must be
 # marked as NA. It is very important to start the file from the first of
 # January (of any year) and end it at the 31st of December (of any year). See
 # the attached file called example_.txt (where _ is a number).
 #
 # OUTPUT
-# 01_TN_statistics_raw.csv - Main statistics on input Tn serie
+# 01_TN_statistics_raw.csv - Main statistics on input Tn series
 # 01_TN_summary_raw.csv - Summary of input Tn series and their difference
-# 01_TX_statistics_raw.csv - Main statistics on input Tx serie
+# 01_TX_statistics_raw.csv - Main statistics on input Tx series
 # 01_TX_summary_raw.csv - Summary of input Tx series and their difference
 # 01_TN_plot_raw.pdf - Plots of input Tn series
 # 01_TX_plot_raw.pdf - Plots of input Tx series
 # 02_TN_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tn
-# 02_TN_trend_relative error.csv - Informations on trend of Tn
-# 02_TN_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tn
+# 02_TN_trend_relative_ratio.csv - Information on trend of Tn
+# 02_TN_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and RR of Tn
 # 02_TN_plot_diff.pdf - Plot and distribution of difference in Tn series
-# 02_TN_relative_error.pdf - Plots of Tn PRE
+# 02_TN_relative_ratio.pdf - Plots of Tn RR
 # 02_TX_statistics_boxplot_monthly_diff.csv - Monthly differences of candidate and reference Tx
-# 02_TX_trend_relative error.csv - Informations on trend of Tx
-# 02_TX_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and PRE of Tx
+# 02_TX_trend_relative_ratio.csv - Information on trend of Tx
+# 02_TX_boxplot_monthly_diff.pdf - Boxplot of monthly series, differences and RR of Tx
 # 02_TX_plot_diff.pdf - Plot and distribution of difference in Tx series
-# 02_TX_relative_error.pdf - Plots of Tx PRE
+# 02_TX_relative_ratio.pdf - Plots of Tx RR
 # 03_TN_classes_candidate.csv - Statistics on the classes of candidate Tn
 # 03_TN_classes_reference.csv - Statistics on the classes of reference Tn
 # 03_TN_cold.csv - Statistics on Tn events classified as cold
@@ -126,6 +126,8 @@
 # Versions:
 # 
 # v1.0 - 20180319: First public release after code cleaning and review
+# v1.1 - 20190628: Minor code modification and optimization, according to
+#                  the reviewers of the methodological paper
 # 
 ###############################################################################
 
@@ -171,23 +173,22 @@ classification <- function(serie) {
 
 statistics <- function(serie1, serie2) {
   ##########################################################
-  # Compute RMSE, ME, cor and summary on common class events on both series
+  # Compute RMSE, cor and summary on common class events on both series
   #
   # INPUT
   # serie1: a single candidate temperature serie to analyze
   # serie2: a single reference temperature serie to analyze
   #
   # OUTPUT
-  # Summary, lenght, RMSE, ME and cor of the series
+  # Summary, lenght, RMSE and cor of the series
   ##########################################################
   
   rmse_common = rmse(serie1, serie2)
-  me_common = me(serie1, serie2)
   cor_common = cor(serie1, serie2)
   sum_CAN = summary(serie1)
   sum_REF = summary(serie2)
   l_common = length(serie1)
-  info_common = cbind(sum_CAN, sum_REF, l_common, rmse_common, me_common, cor_common)
+  info_common = cbind(sum_CAN, sum_REF, l_common, rmse_common, cor_common)
   
   return(info_common)
 } # end of function statistics
@@ -255,16 +256,15 @@ analyze <- function(name, Tserie) {
   lines(density(can_serie[,4],na=T), col="blue")
   dev.off()
   
-  # Compute statistics: RMSE, ME, T, KS, Wilcox and Cor between the two series
+  # Compute statistics: RMSE, T, KS, Wilcox and Cor between the two series
   rmse_er = round(rmse(ref_serie[,4],can_serie[,4],na.rm=T), digits=2)
-  mean_error = me(ref_serie[,4], can_serie[,4])
   test_t = t.test(ref_serie[,4], can_serie[,4])
   test_ks = suppressWarnings(ks.test(ref_serie[,4], can_serie[,4]))
   test_wil = wilcox.test(ref_serie[,4], can_serie[,4])
   test_cor = cor.test(ref_serie[,4], can_serie[,4], method="spearman", exact=FALSE)
-  test_names = c("RMSE", "Mean error", "T-Test p-value", "Kolmogorov-Smirnov p-value",
+  test_names = c("RMSE", "T-Test p-value", "Kolmogorov-Smirnov p-value",
                  "Wilcoxon p-value", "Spearman rho", "Spearman p-value")
-  test_res = c(rmse_er, mean_error, test_t$p.value, test_ks$p.value, test_wil$p.value, 
+  test_res = c(rmse_er, test_t$p.value, test_ks$p.value, test_wil$p.value, 
                as.numeric(test_cor$estimate), test_cor$p.value)
   test_res = round(test_res, digits=2)
   test_fin = cbind(test_names, test_res)
@@ -282,16 +282,13 @@ analyze <- function(name, Tserie) {
   Tserie_can_mm = matrix(Tserie_can_m, ncol=12, byrow=T)
   Tserie_ref_mm = matrix(Tserie_ref_m, ncol=12, byrow=T)
   
-  # Monthly percentage relative error
-  err = Tserie_can_mm - Tserie_ref_mm
-  err = err / Tserie_ref_mm
-  err_month = round(err*100, digits=2)
-  
+  # Monthly relative ratio
+  err_month = abs(Tserie_can_mm) / abs(Tserie_ref_mm)
+
   # Save Monthly boxplots PDF
   pdf(paste("02_",name,"_boxplot_monthly_diff.pdf",sep=""))
-  par(mfcol=c(2,2))
+  par(mfcol=c(3,1))
   bp = boxplot(dif_mm, main="Monthly difference", ylab="Temperature difference (°C)", xlab="Months")
-  boxplot(err_month, main="Percentage relative error", ylab="(%)", xlab="Months")
   boxplot(Tserie_can_mm, main=paste(name,"monthly candidate"), ylab="Temperature (°C)", xlab="Months")
   boxplot(Tserie_ref_mm, main=paste(name,"monthly reference"), ylab="Temperature (°C)", xlab="Months")
   dev.off()
@@ -304,31 +301,29 @@ analyze <- function(name, Tserie) {
   mm_dif = as.data.frame(mm_dif)
   write.csv(mm_dif, file=paste("02_",name,"_statistics_boxplot_monthly_diff.csv",sep=""), row.names=T)
   
-  # Find abnormal values (>100) where one station has data but the other hasn't
-  pdf(paste("02_",name,"_relative_error.pdf",sep=""))
+  # Find values of Inf (where reference station has data equal to zero)
+  pdf(paste("02_",name,"_relative_ratio.pdf",sep=""))
   par(mfcol=c(2,1))
   M = matrix(err_month, nrow=nrow(err_month), ncol=ncol(err_month), byrow=F)
-  threshold = 100
-  M[M<(-1*threshold)] = NA
-  M[M>threshold] = NA
-  boxplot(M, main=paste(name,"percentage relative error (range +/- 100)"), ylab="(%)", xlab="Months")
+  threshold = Inf
+  M[M==threshold] = NA
+  boxplot(M, main=paste(name,"relative ratio"), ylab="RR", xlab="Months")
   vect = as.vector(t(M))
   raw_e = zooreg(vect, frequency=12, start=(tab[1,6]))
   numb = c(1:length(vect))
-  plot(numb, raw_e, type="l", main=paste(name,"percentage relative error (range +/- 100)"),
-       ylab="(%)", xlab="Index")
+  plot(numb, raw_e, type="l", main=paste(name,"relative ratio"), ylab="RR", xlab="Index")
   trend = zyp.trend.vector(vect, conf.intervals=T, preserve.range.for.sig.test=T)
   abline(trend[11], trend[2])
   dev.off()
   
   # Save trends
   trend = as.data.frame(trend)
-  write.csv(trend, file=paste("02_",name,"_trend_relative error.csv",sep=""), row.names=T)
+  write.csv(trend, file=paste("02_",name,"_trend_relative_ratio.csv",sep=""), row.names=T)
   
   # Differences plot
   pdf(paste("02_",name,"_plot_diff.pdf",sep=""))
   par(mfcol=c(2,1))
-  plot(raw_diff, type="l", main=paste(name,"Difference (Candidate - Reference)"),
+  plot(raw_diff, type="l", main=paste(name,"difference (Candidate - Reference)"),
        ylab="Temperature difference (°C)", xlab="Years")
   abline(0, 0, col="red")
   hist(raw_diff, freq=T, main="History", xlab="Temperature difference (°C)")
